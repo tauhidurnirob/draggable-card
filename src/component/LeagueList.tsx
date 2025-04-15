@@ -1,6 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { DndContext, closestCenter, DragEndEvent, DragOverlay } from "@dnd-kit/core";
+import {
+  DndContext,
+  closestCenter,
+  DragEndEvent,
+  DragOverlay,
+} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
@@ -79,26 +84,38 @@ export default function LeagueList() {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    setActiveId(null)
+    setActiveId(null);
     if (!over) return;
-  
+
     const activeItem = findLeagueById(Number(active.id));
     if (!activeItem) return;
-  
+
     const isInActive = activeLeagues.some((l) => l.id === activeItem.id);
     const isInArchived = archivedLeagues.some((l) => l.id === activeItem.id);
-  
+
     const overId = over.id;
-    if (isInActive && active.id !== over.id && overId !== ARCHIVED_ZONE && overId !== ACTIVE_ZONE) {
+    if (
+      isInActive &&
+      active.id !== over.id &&
+      overId !== ARCHIVED_ZONE &&
+      overId !== ACTIVE_ZONE
+    ) {
       const oldIndex = activeLeagues.findIndex((l) => l.id === activeItem.id);
       const newIndex = activeLeagues.findIndex((l) => l.id === Number(overId));
       setActiveLeagues(arrayMove(activeLeagues, oldIndex, newIndex));
       return;
     }
-  
-    if (isInArchived && active.id !== over.id && overId !== ARCHIVED_ZONE && overId !== ACTIVE_ZONE) {
+
+    if (
+      isInArchived &&
+      active.id !== over.id &&
+      overId !== ARCHIVED_ZONE &&
+      overId !== ACTIVE_ZONE
+    ) {
       const oldIndex = archivedLeagues.findIndex((l) => l.id === activeItem.id);
-      const newIndex = archivedLeagues.findIndex((l) => l.id === Number(overId));
+      const newIndex = archivedLeagues.findIndex(
+        (l) => l.id === Number(overId)
+      );
       setArchivedLeagues(arrayMove(archivedLeagues, oldIndex, newIndex));
       return;
     }
@@ -107,7 +124,7 @@ export default function LeagueList() {
       setArchivedLeagues((prev) => [...prev, activeItem] as any);
       return;
     }
-  
+
     if (overId === ACTIVE_ZONE && isInArchived) {
       setArchivedLeagues((prev) => prev.filter((l) => l.id !== activeItem.id));
       setActiveLeagues((prev) => [...prev, activeItem]);
@@ -116,7 +133,11 @@ export default function LeagueList() {
   };
 
   return (
-    <DndContext collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+    <DndContext
+      collisionDetection={closestCenter}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
       <section className="mb-10">
         <DroppableContainer
           id={ACTIVE_ZONE}
@@ -140,7 +161,7 @@ export default function LeagueList() {
         </div>
         <DroppableContainer
           id={ARCHIVED_ZONE}
-          className="bg-neutral-900 p-4 rounded-xl space-y-4 min-h-[107px] border border-dashed border-[#CCCCC5]"
+          className="bg-neutral-900 p-4 mb-10 rounded-xl space-y-4 min-h-[107px] border border-dashed border-[#CCCCC5]"
         >
           <SortableContext
             items={archivedLeagues.map((l: ILeague) => l.id)}
@@ -158,10 +179,10 @@ export default function LeagueList() {
         </DroppableContainer>
       </section>
       <DragOverlay>
-  {activeId ? (
-    <SortableLeague league={findLeagueById(activeId)!} isOverlay />
-  ) : null}
-</DragOverlay>
+        {activeId ? (
+          <SortableLeague league={findLeagueById(activeId)!} isOverlay />
+        ) : null}
+      </DragOverlay>
     </DndContext>
   );
 }

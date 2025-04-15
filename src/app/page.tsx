@@ -6,7 +6,7 @@ const LeagueList = dynamic(() => import("@/component/LeagueList"), { ssr: false 
 
 export default function Home() {
   return (
-    <main className="w-[100%] h-[100%] bg-[#171717] text-white p-8">
+    <main className=" text-white">
       <div className="max-w-3xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <div className="flex gap-1 flex-1 items-center ">
@@ -16,7 +16,7 @@ export default function Home() {
             <h1 className="text-2xl font-semibold line ">Leagues</h1>
           </div>
 
-          <button className="bg-neutral-800 hover:bg-neutral-700 px-4 py-2 rounded-md text-sm">
+          <button className="bg-neutral-800 text-[#E5E5DD] hover:bg-neutral-700 px-4 py-2 rounded-md text-sm">
             + Connect League
           </button>
         </div>
